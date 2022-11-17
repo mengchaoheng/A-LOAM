@@ -21,6 +21,67 @@ Follow [Ceres Installation](http://ceres-solver.org/installation.html).
 Follow [PCL Installation](http://www.pointclouds.org/downloads/linux.html).
 
 
+### 1.3. Ubuntu20.04
+#### 1.3.1 **Ubuntu** and **ROS**
+[ROS noetic](http://wiki.ros.org/Installation/Ubuntu).
+
+#### 1.3.2. **Ceres Solver**
+Follow [Ceres Installation](http://ceres-solver.org/installation.html).
+
+Start by installing all the dependencies.
+```
+# CMake
+sudo apt-get install cmake
+# google-glog + gflags
+sudo apt-get install libgoogle-glog-dev libgflags-dev
+# Use ATLAS for BLAS & LAPACK
+sudo apt-get install libatlas-base-dev
+# Eigen3
+sudo apt-get install libeigen3-dev
+# SuiteSparse (optional)
+sudo apt-get install libsuitesparse-dev
+```
+We are now ready to build, test, and install Ceres.
+
+```
+tar zxf ceres-solver-2.1.0.tar.gz
+mkdir ceres-bin
+cd ceres-bin
+cmake ../ceres-solver-2.1.0
+make -j3
+make test
+# Optionally install Ceres, it can also be exported using CMake which
+# allows Ceres to be used without requiring installation, see the documentation
+# for the EXPORT_BUILD_DIR option for more information.
+make install
+```
+#### 1.3.3. **PCL**
+Follow [PCL Installation](https://pointclouds.org/downloads/#linux).
+
+```
+sudo apt install libpcl-dev
+```
+
+
+#### fix for ubuntu20.04
+1. A_LOAM->CMakeLists.txt, change `set(CMAKE_CXX_FLAGS "-std=c++1")` to `set(CMAKE_CXX_FLAGS "-std=c++14")`
+2. For 
+```
+/home/a/catkin_ws/src/A-LOAM/src/laserMapping.cpp:43:10: fatal error: pcl_conversions/pcl_conversions.h: No such file or 
+```
+have to install pkg:
+```
+sudo apt-get install ros-noetic-pcl-conversions
+
+```
+3. change `#include <opencv/cv.h>` to #include <opencv2/imgproc.hpp>`
+4. change `CV_LOAD_IMAGE_GRAYSCALE` to `cv::IMREAD_GRAYSCALE`
+5. (option) change `/camera_init` to `camera_init` in *.cpp of A_LOAM->src 
+
+
+
+
+
 ## 2. Build A-LOAM
 Clone the repository and catkin_make:
 
